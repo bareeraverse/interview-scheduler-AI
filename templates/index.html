@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interview Scheduler</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <script>
+      function togglePriority() {
+        var role = document.querySelector('select[name="role"]').value;
+        var priorityField = document.getElementById("priority-field");
+        if (role === "Candidate") {
+          priorityField.style.display = "block";
+        } else {
+          priorityField.style.display = "none";
+        }
+      }
+
+      window.onload = togglePriority;
+    </script>
+  </head>
+  <body class="p-5">
+    <div class="container">
+      <h1 class="mb-4">Interview Entry Form</h1>
+      <form method="post" class="mb-5">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" name="name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <select name="role" class="form-select" onchange="togglePriority()">
+            <option value="Candidate">Candidate</option>
+            <option value="Interviewer">Interviewer</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Available Time Slots</label><br />
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="availability"
+              value="9am"
+            />
+            9am
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="availability"
+              value="10am"
+            />
+            10am
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="availability"
+              value="11am"
+            />
+            11am
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="availability"
+              value="12pm"
+            />
+            12pm
+          </div>
+        </div>
+
+        <div class="mb-3" id="priority-field">
+          <label class="form-label">Priority (1 = High, 5 = Low)</label>
+          <input
+            type="number"
+            name="priority"
+            class="form-control"
+            min="1"
+            max="5"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">➕ Add Entry</button>
+      </form>
+
+      <h2>Current Entries</h2>
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Availability</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for interview in interviews %}
+          <tr>
+            <td>{{ interview.name }}</td>
+            <td>{{ interview.role }}</td>
+            <td>{{ interview.availability }}</td>
+            <td>
+              {% if interview.priority %} {{ interview.priority }} {% else %} —
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <a href="/schedule" class="btn btn-success mt-4"
+        >✔️ Generate Final Schedule</a
+      >
+    </div>
+  </body>
+</html>
